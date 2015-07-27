@@ -3,11 +3,11 @@ function [ Res, Chi, O, E, bins ] = mcgoft( X, F, nBin, SUPWARN, SUPTEST)
 %   @(param)   X       Matrix;   multivariate dataset     (required)
 %   @(param)   F       Function; multivariate ddf/cdf     (required)
 %   @(param)   nBin    Number;   Number of bins           (optional, defaults t0 10)
-%   @(param)   SUPWARN Bolean;   supress any messages     (optional)
-%   @(param)   SUPTEST Bolean;   supress tests            (optional)
+%   @(param)   SUPWARN Bolean;   suppress any messages    (optional)
+%   @(param)   SUPTEST Bolean;   suppress tests           (optional)
 %   @(return)  Res     Bolean;   results of test
 %   @(return)  Chi     Number;   chi-square-test score    
-%   @(return)  O       Matrix;   Obsersved values
+%   @(return)  O       Matrix;   Observed values
 %   @(return)  E       Matrix;   Estimated values
 %   @(return)  bins    Structure;bins values
 %
