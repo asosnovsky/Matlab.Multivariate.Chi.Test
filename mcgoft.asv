@@ -16,7 +16,7 @@ function [ Res, Chi, O, E, bins ] = mcgoft( X, F, nBin, SUPWARN, SUPTEST)
 % Helper Warning function
 function[] = WARN(m,mx)
     if(m >= mx && ~exist('SUPPWARN','var'))
-        warning('Running a process of size %c, may take some time. \nSuggested process size should be less than %c for good performance,\nReducing the `bin` size or `number of variables` may increase speed.',...
+        warning('Running a process of size %s, may take some time. \nSuggested process size should be less than %s for good performance,\nReducing the `bin` size or `number of variables` may increase speed.',...
         m, mx);
     end
 end        
@@ -94,7 +94,7 @@ if(~exist('SUPTEST','var'))
     sizeTest = prod(abs(diff(Tbin)));
 end
 % Warning of size
-WARN(length(cmb)^nVar,(7^3)^3);
+WARN(length(cmb)^nVar,(7^4)^4);
 % Difference Function
 function [ res ] = DDn( fin, n, F, minx )
     DDf = @(fin,n,F) F([fin(1:n-1) minx(n) fin(n+1:end)])-F(fin);
@@ -117,9 +117,7 @@ for iBin = 1:length(cmb)
     end
     bins{iBin} = bin;
     O(iBin) = sum(sum(repmat(bin(1,:),nObs,1) < X & repmat(bin(2,:),nObs,1) >= X,2)==nVar)/nObs;
-    minx = bin(1,:);maxx = bin(2,:);
-    n = size(bin,2);
-    E(iBin) = abs(DDn(maxx,n,F,minx));
+    E(iBin) = abs(diff(F(bin)));
 end
 % Test that all bins were measured
 if(abs(sum(O)-1)>1e-10 && ~exist('SUPTEST','var') && ~exist('SUPWARN','var'))

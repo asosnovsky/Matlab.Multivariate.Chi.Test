@@ -34,6 +34,7 @@ fprintf('-> Results  : %s\n',...
     TestInt(Results));
 
 %% Trivariate Case
+% May take a bit
 clear X G Results Chi
 clc;clear X G Results Chi
 % Create a dataset
