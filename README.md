@@ -8,7 +8,7 @@ This repo contains two files:
 
 ## The function
 ```{matlab}
-function [ Results, ChiScore, O, E, bins ] = mcgoft( X, F, nBin, SUPWARN, SUPTEST)
+function [ Chi, pVal, nObs, nBin] = mcgoft( X, F, nBin, SUPMSG, waitCB)
 ```
 ### Inputs
 #### Required Inputs
@@ -30,17 +30,17 @@ function [ Results, ChiScore, O, E, bins ] = mcgoft( X, F, nBin, SUPWARN, SUPTES
 Example:
 ```{matlab}
     pd = makedist('Normal');
-    F = @(x) prod(cdf(pd,x),2);
+    F = @(x) prod(cdf(pd,x'),2);
 ```
 #### Optional Inputs
 - **nBin**: The number of bins that matlab will divide your dataset into. By default the number is *10*, which is useful for quick computations of large numbers of variable, but not very accurate.
 - **SUPWARN**: suppress any messages or warnings. This should be a boolean.
-- **SUPTEST**: suppress any tests. Please note that these tests are necessary checks that ensure you passed all the data correctly to the functions. However, suppressing this may cause an increase in computational time. This should be a boolean.
 
 ### Outputs
-- **Results**: Bolean;   returns the results of test.
-- **ChiScore**: Number;   chi-square-test score    
-- **O**: Matrix;   The probability based off the Observed values
-- **E**: Matrix;   The probability based off the Estimated values
+Chi, pVal, nObs, nBin
+- **pVal**: Bolean;   returns the p-value.
+- **Chi**: Number;   chi-square-test score    
+- **nObs**: Number;   The number of observations per variable
+- **nBin**: Number;   The number of bins
 - **bins**: Structure; all the bins with their values
 
