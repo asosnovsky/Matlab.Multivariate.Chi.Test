@@ -11,27 +11,28 @@ X = random(pd,1000,1);
 F = @(x) cdf(pd,x);
 
 % Chi Test
-[Results, Chi] = mcgoft(X,F);
+[Chi, pVal] = mcgoft(X,F);
 
 % Print
 TestInt = @(R) native2unicode(R*'Pass'+(1-R)*'Fail');
 fprintf('----------------\nResults  : %s\nChi Score: %3.3f\n----------------\n',...
-    TestInt(Results) , Chi);
+    TestInt(pVal<0.05) , Chi);
 
 %% Bivariate Case
 clear X G Results Chi
 clc;clear X G Results Chi
 % Create a dataset
 rng('default');  
-X = random(pd,1000,2);
-F = @(x) prod(cdf(pd,x),2);% Assuming independance of X's
+X = random(pd,500,2);
+F = @(x) prod(cdf(pd,x'),2);% Assuming independance of X's
 
 % Chi Test
-Results = mcgoft(X,F);
+[Chi, pVal] = mcgoft(X,F);
+
 % Print
 TestInt = @(R) native2unicode(R*'Pass'+(1-R)*'Fail');
-fprintf('-> Results  : %s\n',...
-    TestInt(Results));
+fprintf('----------------\nResults  : %s\nChi Score: %3.3f\n----------------\n',...
+    TestInt(pVal<0.05) , Chi);
 
 %% Trivariate Case
 % May take a bit
@@ -40,7 +41,7 @@ clc;clear X G Results Chi
 % Create a dataset
 rng('default');  
 X = random(pd,1000,3);
-F = @(x) prod(cdf(pd,x),2);
+F = @(x) prod(cdf(pd,x'),2);
 
 % Chi Test
 Results = mcgoft(X,F);
@@ -56,7 +57,7 @@ clc;clear X G Results Chi
 % Create a dataset
 rng('default');  
 X = random(pd,1000,4);
-F = @(x) prod(cdf(pd,x),2);
+F = @(x) prod(cdf(pd,x'),2);
 
 % Chi Test
 Results = mcgoft(X,F);
