@@ -66,11 +66,9 @@ for i=1:nVar
     bIntv(:,i) = (minX(i):bDim(i):maxX(i));
 end
     if(exist('waitCB','var')); waitCB(2/6); end;
-
 %3 Get all needed combinations
 cmb = combos(1:nBin,nVar);
     if(exist('waitCB','var')); waitCB(3/6); end;
-
 %4 Define helper-variables
 if(nVar > 1)
     cmbs = (dec2bin(0:2^nVar-1)=='1')'+1;
@@ -80,9 +78,14 @@ else
     cmbs    = [1 2];
     sgn     = [-1 1];
 end
-Chi = 0; 
+Chi = 0;
 mrg = @(E) abs(sgn*F(E));
     if(exist('waitCB','var')); waitCB(4/6); end;
+
+% Time warning
+if( 9e-04*length(cmb) > 60 )
+    warning('Computation may take some time, approximately %d minutes.', (9e-04*length(cmb))/60 );
+end
 
 %5 Computation loop
 for iBin = 1:length(cmb)
@@ -100,18 +103,19 @@ for iBin = 1:length(cmb)
     end
     E = mrg(E);
         if(exist('waitCB','var')); waitCB((4 + iBin./length(cmb))/6); end;
+    if(abs(E) < 1E-21) E = 1E-21; end;
     Chi = Chi + ((O - E).^2)./E;
     if(exist('waitCB','var')); waitCB(4/6 + (iBin/length(cmb))/6); end;
 end
     if(exist('waitCB','var')); waitCB(5/6); end;
 %6 Compute Results
-pVal = chi2cdf(Chi,nObs-1);
+pVal = chi2cdf(Chi,prod(size(X))-1);
 if(~SUPMSG)
     fprintf('\n----] Chi2-Fit Test Results [----\n');
-    fprintf('-> Number of Bins: %d\n', nBin);
+    fprintf('-> Number of Bins to Observations: %d/%d\n', nBin, prod(size(X)));
     fprintf('-> Chi2-Score: %2.3f\n', Chi );
     fprintf('-> p-Value: %1.6f\n', pVal );
-    fprintf('-> Degrees of Freedom: %d\n', nObs-1  );
+    fprintf('-> Degrees of Freedom: %d\n', prod(size(X))-1  );
     %fprintf('-> Number of Bins: %d\n-> Chi Score: %2.3f\n-> P-Value: %1.6f\n-> Degrees of Freedom: %d\n\n',...
        % nBin, Chi, pVal, nObs-1);
     fprintf('----] Chi2-Fit Test Results [----\n\n');
